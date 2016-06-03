@@ -1,0 +1,127 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url(fonts/OpenSans-Light.ttf);
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url(fonts/OpenSans-Regular.ttf);
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  cursor: move;
+  overflow: hidden;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+  body {
+    font-weight: 300;
+  }
+}
+
+.search-query.with-placeholder {
+  opacity: .3;
+}
+
+.bottom-controls {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.bottom-controls .zoom-controls {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 80px;
+  padding: 10px;
+}
+
+.bottom-controls .zoom-controls .button{
+  height: 15px;
+  width: 15px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  text-decoration: none;
+  color: #fff;
+  background-color: #557DAD;
+  padding: 10px;
+  border-radius: 2px;
+}
+
+.button:hover {
+  background-color: #638BBB;
+}
+
+.button.selected {
+  background-color: #638BBB;
+}
+
+.top-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.top-controls .sort {
+  display: flex;
+  justify-content: space-between;
+  width: 175px;
+  padding: 10px;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.link.notFound{
+  stroke: #557DAD;
+}
+
+.node.notFound text{
+  pointer-events: none;
+  opacity: .2;
+}
+
+.node.notFound image{
+  opacity: .2;
+  cursor: auto;
+}
+
+.overlay{
+  background-color: #4B6E99;
+}
+
+.node text {
+  font-size: 10px;
+  fill: #F2F2F2;
+}
+
+.link {
+  fill: none;
+  stroke: #7897B6;
+  stroke-width: 1.5px;
+}
+
+.search-query {
+  position: fixed;
+  color: white;
+  pointer-events: none;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  font-size: 10vh;
+  bottom: 0;
+}
