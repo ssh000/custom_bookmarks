@@ -1,75 +1,66 @@
-"use strict"
+import classnames from 'classnames';
+import React, { useState, useEffect } from 'react';
 
-const Sifter = require("sifter")
+const keys = {
+    BACKSPACE: 8,
+    SPACE: 32,
+    ESCAPE: 27,
+    DELETE: 46
+};
 
-const init = (svgGroup, nodes) => {
-  let sifter = new Sifter(nodes)
-  let query = ""
-  let searchResults = document.querySelector('.search-query')
+const fadeDelay = 1000;
 
-  window.addEventListener('keypress', (event) => {
-    updateQuery(String.fromCharCode(event.keyCode))
-  })
+const isTypeable = keyCode => /[a-zA-Z0-9-_]/.test(String.fromCharCode(keyCode));
 
-  document.body.addEventListener('keydown', (event) => {
-    handleTextHotkeys(event)
-  })
+export default function Search(props) {
+    const { className, onChange } = props;
+    const [query, setQuery] = useState('');
+    const [visible, setVisible] = useState(false);
+    let timerId = null;
 
-  document.body.addEventListener('keyup', (event) => {
-    filterNodes()
-    searchResults.classList.remove('with-placeholder')
-    searchResults.innerHTML = query
-  })
+    const classes = classnames({
+        [className]: true,
+        [`${className}--visible`]: visible
+    });
 
-  const filterNodes = () => {
-    let searchResult = sifter.search(query, {
-      fields: ['title', 'url']
-    })
+    useEffect(() => {
+        document.body.addEventListener('keydown', (event) => {
+            if ([keys.BACKSPACE, keys.SPACE].includes(event.keyCode)) event.preventDefault();
+            switch (event.keyCode) {
+            case keys.BACKSPACE:
+                setQuery((prevQuery) => {
+                    const newQuery = prevQuery.slice(0, -1);
+                    onChange(newQuery);
+                    return newQuery;
+                });
+                break;
+            case keys.SPACE:
+                setQuery((prevQuery) => {
+                    const newQuery = `${prevQuery} `;
+                    onChange(newQuery);
+                    return newQuery;
+                });
 
-    let result = _.at(nodes, searchResult.items.map(item => item.id))
+                break;
+            case keys.ESCAPE:
+            case keys.DELETE:
+                setQuery('');
+                onChange('');
+                break;
+            default:
+                if (isTypeable(event.keyCode)) {
+                    setVisible(true);
+                    clearTimeout(timerId);
+                    timerId = setTimeout(() => setVisible(false), fadeDelay);
+                    setQuery((prevQuery) => {
+                        const newQuery = `${prevQuery}${String.fromCharCode(event.keyCode)}`;
+                        onChange(newQuery);
+                        return newQuery;
+                    });
+                }
+            }
+        });
+    }, []);
 
-    let newNodesIds = result.map(d => d.id)
-
-    let resultNodes = svgGroup.selectAll('g.node')
-      .attr('class', 'node')
-      .filter(d => {
-        return !_.includes(newNodesIds, d.id)
-      })
-
-    resultNodes.attr('class', 'node notFound')
-  }
-
-  const handleTextHotkeys = (e) => {
-    if (_.includes([8, 32], e.keyCode)) e.preventDefault()
-    switch (e.keyCode) {
-      case 8:
-        backspace()
-        break
-      case 32:
-        spacebar()
-        break
-      case 27:
-      case 46:
-        clearQuery()
-        break
-    }
-  }
-
-  const updateQuery = (letter) => {
-    query += letter
-  }
-
-  const clearQuery = () => {
-    query = ''
-  }
-
-  const spacebar = () => {
-    query += " "
-  }
-
-  const backspace = () => {
-    query = _.join(_.initial(query), '')
-  }
+    return <div className={classes}>{query}</div>;
 }
-
-module.exports = { init }

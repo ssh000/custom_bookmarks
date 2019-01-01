@@ -1,0 +1,18 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "comma-dangle": ["error", "never"],
+        "no-confusing-arrow": ["error", { "allowParens": true }],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "indent": ["error", 4],
+        "react/jsx-indent": [2, 4],
+        "react-hooks/rules-of-hooks": "error"
+    },
+    "env": {
+        "browser": true,
+        "webextensions": true
+    },
+    "plugins": [
+        "react-hooks"
+    ]
+}

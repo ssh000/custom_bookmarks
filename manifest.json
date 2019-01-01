@@ -1,6 +1,6 @@
 {
   "name": "Custom Bookmarks",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "icons": { "128": "build/icons/icon128.png" },
   "chrome_url_overrides" : {
@@ -10,7 +10,7 @@
 	  "bookmarks"
 	],
   "background": {
-    "scripts": ["build/background.js"],
+    "scripts": ["build/backend.js"],
     "persistent": false
   },
   "browser_action": {

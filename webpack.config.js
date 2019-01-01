@@ -1,30 +1,22 @@
-"use strict"
-
-const path = require("path")
-const webpack = require("webpack")
-
-const front = ["./src/front"]
-const background = ["./src/background"]
-
-const plugins = [
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.NoErrorsPlugin()
-]
-
-let debug = true
-let filename = "[name].js"
+const path = require('path');
 
 module.exports = {
   entry: {
-    front,
-    background
+    app: './src/index.js',
+    backend: './src/backend'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }
+    ]
   },
   output: {
-    path: path.resolve(__dirname, "build"),
-    filename
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].js'
   },
-  debug,
-  resolve: {
-    extensions: ["", ".js"]
-  }
-}
+  devtool: 'cheap-module-source-map'
+};

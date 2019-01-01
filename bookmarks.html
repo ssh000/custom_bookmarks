@@ -2,27 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/build/styles.css">
-    <script src="/build/background.js"></script>
-    <script src="/build/front.js"></script>
-
     <title>Custom Bookmarks</title>
   </head>
   <body>
-    <div class="top-controls">
-      <div class="sort">
-        <a class="button sort-default" href="#">By Default</a>
-        <a class="button sort-by-hostname" href="#">By Site Name</a>
-      </div>
-      <div class="view"></div>
-    </div>
-    <div class="bottom-controls">
-      <div class="zoom-controls">
-        <a class="button zoom-in" href="#">+</a>
-        <a class="button zoom-out" href="#">&ndash;</a>
-      </div>
-    </div>
-    <div id="tree-container"></div>
-    <div class="search-query with-placeholder">type to search</div>
+    <div id="root"></div>
+    <script src="/build/app.js"></script>
   </body>
 </html>

@@ -1,2 +1,6 @@
 /node_modules
 npm-debug.log
+/build/app.js
+/build/app.js.map
+/build/backend.js
+/build/backend.js.map
