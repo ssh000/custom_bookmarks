@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 
-const zoomMin = 0.1;
+const zoomMin = -5.0;
 const zoomMax = 5.0;
 
-const tree = (data, width, height) => d3.tree().size([height, width])(d3.hierarchy(data));
+const tree = (data, width, height) => d3.cluster().size([width, height]).nodeSize([20, height])(d3.hierarchy(data));
 
 const getZoom = group => d3.zoom().scaleExtent([zoomMin, zoomMax]).on('zoom', () => group.attr('transform', d3.event.transform));
 
@@ -76,25 +76,15 @@ export const update = ({ svg, data, searchResults = [] }) => {
         .attr('dy', 4)
         .style('text-anchor', d => (d.children ? 'end' : 'start'))
         .text(d => d.data.title)
-        .attr('class', 'node__text-shadow');
-
-    href.append('text')
-        .attr('dx', d => (d.children ? -12 : 12))
-        .attr('dy', 4)
-        .style('text-anchor', d => (d.children ? 'end' : 'start'))
-        .text(d => d.data.title)
         .attr('class', 'node__text');
 
     // Fit diagram to screen
     const bounds = group.node().getBBox();
-    const widthRatio = width / bounds.width;
-    const heightRatio = height / bounds.height;
-    const newScale = Math.min(widthRatio, heightRatio) - 0.2; // padding
-    const newCenter = [
-        width / 2 - ((bounds.x + bounds.width) * newScale / 2),
-        height / 2 - ((bounds.y + bounds.height) * newScale / 2)
-    ];
+    const scale = 0.75 / Math.max(bounds.width / width, bounds.height / height);
+    const midX = bounds.x + bounds.width / 2;
+    const midY = bounds.y + bounds.height / 2;
+    const translate = [width / 2 - scale * midX, height / 2 - scale * midY];
     const zoom = getZoom(group);
     svg.call(zoom);
-    svg.call(zoom.transform, d3.zoomIdentity.translate(...newCenter).scale(newScale));
+    svg.call(zoom.transform, d3.zoomIdentity.translate(...translate).scale(scale));
 };

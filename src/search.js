@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 
@@ -7,8 +8,6 @@ const keys = {
     ESCAPE: 27,
     DELETE: 46
 };
-
-const fadeDelay = 1000;
 
 const isTypeable = keyCode => /[a-zA-Z0-9-_]/.test(String.fromCharCode(keyCode));
 
@@ -22,6 +21,8 @@ export default function Search(props) {
         [className]: true,
         [`${className}--visible`]: visible
     });
+
+    const hideSearch = _.debounce(() => setVisible(false), 1000);
 
     useEffect(() => {
         document.body.addEventListener('keydown', (event) => {
@@ -50,8 +51,7 @@ export default function Search(props) {
             default:
                 if (isTypeable(event.keyCode)) {
                     setVisible(true);
-                    clearTimeout(timerId);
-                    timerId = setTimeout(() => setVisible(false), fadeDelay);
+                    hideSearch();
                     setQuery((prevQuery) => {
                         const newQuery = `${prevQuery}${String.fromCharCode(event.keyCode)}`;
                         onChange(newQuery);

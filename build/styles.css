@@ -38,12 +38,6 @@ body {
   fill: white;
 }
 
-.node__text-shadow {
-  stroke: #82888a;
-  stroke-width: 1px;
-  opacity: 0.9;
-}
-
 .link {
   fill: none;
   stroke: #82888a;
